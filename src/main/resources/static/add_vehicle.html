@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Vehicle</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Vehicle Management System</h1>
+        <h2>Add New Vehicle</h2>
+        <form id="vehicleForm">
+            <div class="form-group">
+                <label for="make">Make:</label>
+                <input type="text" id="make" name="make" placeholder="e.g., Toyota, Honda, Ford" required>
+            </div>
+            <div class="form-group">
+                <label for="model">Model:</label>
+                <input type="text" id="model" name="model" placeholder="e.g., Corolla, Civic, F-150" required>
+            </div>
+            <div class="form-group">
+                <label for="year">Year:</label>
+                <input type="number" id="year" name="year" placeholder="e.g., 2020" required>
+            </div>
+            <div class="form-group">
+                <label for="color">Color:</label>
+                <input type="text" id="color" name="color" placeholder="e.g., Red, Blue, Silver" required>
+            </div>
+            <div class="form-group">
+                <label for="registrationNumber">Registration Number:</label>
+                <input type="text" id="registrationNumber" name="registrationNumber" placeholder="e.g., ABC123" required>
+            </div>
+            <div class="form-group">
+                <label for="maintenanceInfo">Maintenance Info:</label>
+                <input type="text" id="maintenanceInfo" name="maintenanceInfo" placeholder="e.g., Last serviced on 01/04/2025">
+            </div>
+            <div class="form-group">
+                <label for="transmissionType">Transmission Type:</label>
+                <select id="transmissionType" name="transmissionType">
+                    <option value="Manual">Manual</option>
+                    <option value="Automatic">Automatic</option>
+                </select>
+            </div>
+            <button type="submit">Add Vehicle</button>
+        </form>
+        <div class="nav-buttons">
+            <a href="/vehicle_list.html"><button>View All Vehicles</button></a>
+        </div>
+        <div id="error" class="error"></div>
+    </div>
+    <script>
+        async function loadVehicleForEdit() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            if (id) {
+                try {
+                    const response = await fetch(`/api/vehicles/${id}`);
+                    if (response.ok) {
+                        const vehicle = await response.json();
+                        document.getElementById('make').value = vehicle.make;
+                        document.getElementById('model').value = vehicle.model;
+                        document.getElementById('year').value = vehicle.year;
+                        document.getElementById('color').value = vehicle.color;
+                        document.getElementById('registrationNumber').value = vehicle.registrationNumber;
+                        document.getElementById('maintenanceInfo').value = vehicle.maintenanceInfo;
+                        document.getElementById('transmissionType').value = vehicle.transmissionType;
+                        document.querySelector('h2').textContent = 'Edit Vehicle';
+                        document.querySelector('button[type="submit"]').textContent = 'Update Vehicle';
+                        document.getElementById('vehicleForm').dataset.id = id;
+                    }
+                } catch (err) {
+                    document.getElementById('error').textContent = 'Error loading vehicle';
+                }
+            }
+        }
+
+        document.getElementById('vehicleForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = '';
+            const id = e.target.dataset.id;
+
+            const vehicle = {
+                make: document.getElementById('make').value,
+                model: document.getElementById('model').value,
+                year: parseInt(document.getElementById('year').value),
+                color: document.getElementById('color').value,
+                registrationNumber: document.getElementById('registrationNumber').value,
+                maintenanceInfo: document.getElementById('maintenanceInfo').value,
+                transmissionType: document.getElementById('transmissionType').value
+            };
+
+            try {
+                const url = id ? `/api/vehicles/${id}` : '/api/vehicles';
+                const method = id ? 'PUT' : 'POST';
+                const response = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(vehicle)
+                });
+
+                if (response.ok) {
+                    alert(id ? 'Vehicle updated successfully!' : 'Vehicle added successfully!');
+                    window.location.href = '/vehicle_list.html';
+                } else {
+                    const error = await response.json();
+                    errorDiv.textContent = error.message || 'Failed to save vehicle';
+                }
+            } catch (err) {
+                errorDiv.textContent = 'Error connecting to server';
+            }
+        });
+
+        window.onload = loadVehicleForEdit;
+    </script>
+</body>
+</html>
