@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Details</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Vehicle Management System</h1>
+        <h2>Vehicle Details</h2>
+        <div id="vehicleDetails"></div>
+        <div class="nav-buttons">
+            <a href="/add_vehicle.html"><button>Add New Vehicle</button></a>
+            <a href="/vehicle_list.html"><button>View All Vehicles</button></a>
+        </div>
+    </div>
+    <script>
+        async function loadVehicleDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            const detailsDiv = document.getElementById('vehicleDetails');
+            if (!id) {
+                detailsDiv.innerHTML = '<p>No vehicle ID provided</p>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/vehicles/${id}`);
+                if (response.ok) {
+                    const vehicle = await response.json();
+                    detailsDiv.className = 'vehicle-details';
+                    detailsDiv.innerHTML = `
+                        <p><strong>Make:</strong> ${vehicle.make}</p>
+                        <p><strong>Model:</strong> ${vehicle.model}</p>
+                        <p><strong>Year:</strong> ${vehicle.year}</p>
+                        <p><strong>Color:</strong> ${vehicle.color}</p>
+                        <p><strong>Registration:</strong> ${vehicle.registrationNumber}</p>
+                        <p><strong>Maintenance:</strong> ${vehicle.maintenanceInfo}</p>
+                        <p><strong>Transmission:</strong> ${vehicle.transmissionType}</p>`;
+                } else {
+                    detailsDiv.innerHTML = '<p>Vehicle not found</p>';
+                }
+            } catch (err) {
+                detailsDiv.innerHTML = '<p>Error loading vehicle details</p>';
+            }
+        }
+
+        window.onload = loadVehicleDetails;
+    </script>
+</body>
+</html>

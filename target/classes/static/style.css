@@ -1,0 +1,108 @@
+body { 
+    font-family: Arial, sans-serif; 
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    min-height: 100vh;
+}
+h1, h2 { 
+    color: #2c3e50; 
+    text-align: center;
+}
+.page {
+    display: none;
+}
+.active {
+    display: block;
+}
+.form-group { 
+    margin-bottom: 15px; 
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+input, select { 
+    width: 100%; 
+    padding: 10px; 
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+button { 
+    background-color: #3498db; 
+    color: white; 
+    border: none; 
+    padding: 10px 15px; 
+    cursor: pointer; 
+    border-radius: 4px;
+    margin: 5px 0;
+}
+button:hover {
+    background-color: #2980b9;
+}
+table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    margin-top: 20px; 
+}
+th, td { 
+    border: 1px solid #ddd; 
+    padding: 12px; 
+    text-align: left; 
+}
+th { 
+    background-color: #f2f2f2; 
+}
+.action-btn {
+    margin: 2px;
+    padding: 5px 10px;
+}
+.delete-btn {
+    background-color: #e74c3c;
+}
+.delete-btn:hover {
+    background-color: #c0392b;
+}
+.edit-btn {
+    background-color: #f39c12;
+}
+.edit-btn:hover {
+    background-color: #d35400;
+}
+.view-btn {
+    background-color: #2ecc71;
+}
+.view-btn:hover {
+    background-color: #27ae60;
+}
+.nav-buttons {
+    margin-top: 20px;
+    text-align: center;
+}
+.error {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 5px;
+}
+.vehicle-details {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+.vehicle-details p {
+    margin: 5px 0;
+}
+.vehicle-details strong {
+    display: inline-block;
+    width: 120px;
+}
