@@ -19,8 +19,8 @@ public class LessonManager {
     }
 
     private void initializeSampleLessons() {
-        addLesson("Math Student", "2024-05-20", "09:00");
-        addLesson("Science Student", "2024-05-21", "13:30");
+        addLesson("Dulara", "2024-05-20", "09:00");
+        addLesson("Sandaru", "2024-05-21", "13:30");
     }
 
     // CREATE operation
