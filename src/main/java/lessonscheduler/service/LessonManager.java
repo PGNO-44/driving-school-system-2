@@ -18,6 +18,7 @@ public class LessonManager {
         initializeSampleLessons();
     }
 
+    //Adds two sample lessons at startup for testing
     private void initializeSampleLessons() {
         addLesson("Dulara", "2024-05-20", "09:00");
         addLesson("Sandaru", "2024-05-21", "13:30");
