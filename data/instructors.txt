@@ -1,0 +1,4 @@
+Instructor,One,jane3@example.com,jane123,instructor,Kandy,0712345678,3.0
+Instructor,Two,Instructor2@gmail.com,1234,INSTRUCTOR,Kandy,072222222,2.5
+Instructor,Three,Instructor3@gmail.com,12345,INSTRUCTOR,Kandy,07655555,5.0
+Instructor,Four,newInstructor@gmail.com,12345,INSTRUCTOR,Kandy,1234567890,1.0

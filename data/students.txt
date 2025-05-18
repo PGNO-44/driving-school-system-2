@@ -1,0 +1,3 @@
+student,One,studentOne@example.com,12345,STUDENT,077 123 4567,New country
+student,Two,studentTwo@example.com,12345,STUDENT,077 123 4567,New country
+student,Two,studentTwo@example.com,12345,STUDENT,077 123 4567,New country

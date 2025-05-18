@@ -2,11 +2,9 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Booking;
 import com.example.demo.model.Instructor;
-import com.example.demo.model.Schedule;
 import com.example.demo.model.Student;
 import com.example.demo.service.BookingService;
 import com.example.demo.service.InstructorService;
-import com.example.demo.service.ScheduleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,14 +17,11 @@ import java.util.List;
 public class BookingController {
 
     private final BookingService bookingService;
-    private final ScheduleService scheduleService;
     private final InstructorService instructorService;
 
     public BookingController(BookingService bookingService,
-                             ScheduleService scheduleService,
                              InstructorService instructorService) {
         this.bookingService = bookingService;
-        this.scheduleService = scheduleService;
         this.instructorService = instructorService;
     }
 
@@ -82,18 +77,7 @@ public class BookingController {
         }
 
         String studentName = student.getFirstName() + " " + student.getLastName();
-
-        // Delete the booking
         bookingService.deleteBooking(studentName, instructorName, date, timeSlot);
-
-        // Update schedule availability
-        Schedule updatedSchedule = new Schedule(
-                instructorName,
-                date,
-                timeSlot,
-                false
-        );
-        scheduleService.updateSchedule(updatedSchedule);
 
         return "redirect:/student/bookings/my";
     }

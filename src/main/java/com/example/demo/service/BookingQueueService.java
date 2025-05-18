@@ -11,7 +11,6 @@ public class BookingQueueService {
 
     public synchronized void addBooking(Booking booking) {
         booking.setStatus("PENDING");
-        booking.setRequestTime(LocalDateTime.now());
         bookingQueue.enqueue(booking);
     }
 
