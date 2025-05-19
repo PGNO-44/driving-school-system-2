@@ -81,10 +81,6 @@ public class Lesson {
         this.instructorName = instructorName;
     }
 
-    public void setLessonId(String lessonId) {
-        this.lessonId = lessonId;
-    }
-
     public void setLessonType(String lessonType) {
         this.lessonType = lessonType;
     }
