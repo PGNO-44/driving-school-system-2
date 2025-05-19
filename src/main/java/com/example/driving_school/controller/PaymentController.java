@@ -73,20 +73,4 @@ public class PaymentController {
         }
         return "redirect:/api/payments";
     }
-
-    @GetMapping("/queue/add")
-    public String testQueueAdd(Model model) {
-        Payment payment = new Payment("Q001", "S001", "Test", "Cash", 2000.0, "Pending");
-        paymentService.queuePayment(payment);
-        model.addAttribute("message", "Payment added to queue!");
-        return "message"; // create message.jsp for this
-    }
-
-    @GetMapping("/queue/process")
-    public String testQueueProcess(Model model) {
-        paymentService.processQueuedPayments();
-        model.addAttribute("message", "Queue processed and payments saved!");
-        return "message";
-    }
-
 }

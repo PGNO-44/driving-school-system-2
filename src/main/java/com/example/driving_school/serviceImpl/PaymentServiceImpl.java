@@ -15,29 +15,6 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private PaymentRepository paymentRepository;
 
-    //In-memory Queue to hold payments temporarily
-    private Queue<Payment> paymentQueue = new LinkedList<>();
-
-    //Add a payment to the queue
-    public void queuePayment(Payment payment) {
-        paymentQueue.add(payment);
-        System.out.println("Payment added to queue: " + payment.getPaymentId());
-    }
-
-    //Process and save all queued payments
-    public void processQueuedPayments() {
-        while (!paymentQueue.isEmpty()) {
-            Payment payment = paymentQueue.poll(); // Remove first
-            savePayment(payment); // Save to file
-            System.out.println("Processed and saved: " + payment.getPaymentId());
-        }
-    }
-
-    //View all payments in the queue (not yet saved)
-    public List<Payment> getQueuedPayments() {
-        return new ArrayList<>(paymentQueue);
-    }
-
     //Use this for queue processing — not directly exposed via interface
     public Payment savePayment(Payment payment) {
         try {

@@ -9,6 +9,4 @@ public interface PaymentService {
     List<Payment> getAllPayments();
     Payment updatePayment(String paymentId, Payment payment);
     void deletePayment(String paymentId);
-    void queuePayment(Payment payment);
-    void processQueuedPayments();
 }
