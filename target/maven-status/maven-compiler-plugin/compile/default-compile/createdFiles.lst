@@ -1,0 +1,7 @@
+com\vehiclehandling\entity\ManualVehicle.class
+com\vehiclehandling\VehicleManagementApplication.class
+com\vehiclehandling\controller\VehicleController.class
+com\vehiclehandling\entity\AutomaticVehicle.class
+com\vehiclehandling\entity\Vehicle.class
+com\vehiclehandling\service\FileService.class
+com\vehiclehandling\service\VehicleManager.class

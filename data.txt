@@ -1,0 +1,2 @@
+1,toyotaaaa,Corolla,it-876667,02/25/2550,bla,2000,Automatic
+2,Ford,Corolla,it-8766,02/25/2550,black,2000,Automatic
