@@ -15,16 +15,6 @@ public class Lesson {
     private String status;
     private String lessonType;
 
-    /*public Lesson(){
-        lessonId = null;
-        studentName = null;
-        instructorName = null;
-        date = null;
-        time = null;
-        status = null;
-        lessonType = null;
-    }*/
-
     public Lesson(String lessonId, String studentName, String instructorName, String date, String time, String status, String lessonType){
         this.lessonId = lessonId;
         this.studentName = studentName;
