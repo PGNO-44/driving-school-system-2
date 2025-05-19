@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson Scheduler Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #f72585;
+            --radius: 12px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(to right, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: var(--secondary);
+            font-weight: 300;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #eee;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+
+        .status {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status.confirmed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .card-title i {
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .input-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .input-row .form-group {
+            flex: 1;
+        }
+
+        button {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+
+        button.secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        button.danger {
+            background: var(--danger);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 1rem;
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            position: sticky;
+            top: 0;
+        }
+
+        td {
+            padding: 1rem;
+            background: white;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: rgba(248, 150, 30, 0.1);
+            color: var(--warning);
+        }
+
+        .status-confirmed {
+            background: rgba(76, 201, 240, 0.1);
+            color: var(--success);
+        }
+
+        .status-cancelled {
+            background: rgba(247, 37, 133, 0.1);
+            color: var(--danger);
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(67, 97, 238, 0.1);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #e9ecef;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .input-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Lesson Scheduler Pro</h1>
+        <p class="subtitle">Manage your teaching schedule with ease</p>
+    </header>
+
+    <div class="card">
+        <h2 class="card-title">
+            <i class="fas fa-plus-circle"></i> Schedule New Lesson
+        </h2>
+        <div class="form-group">
+            <label for="studentName">Student Name</label>
+            <input type="text" id="studentName" placeholder="Enter student name">
+        </div>
+        <div class="input-row">
+            <div class="form-group">
+                <label for="lessonDate">Date</label>
+                <input type="date" id="lessonDate">
+            </div>
+            <div class="form-group">
+                <label for="lessonTime">Time</label>
+                <input type="time" id="lessonTime">
+            </div>
+        </div>
+        <button onclick="addLesson()">
+            <i class="fas fa-calendar-plus"></i> Schedule Lesson
+        </button>
+        <p id="errorMessage" style="color: var(--danger); margin-top: 1rem;"></p>
+    </div>
+
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 class="card-title">
+                <i class="fas fa-calendar-alt"></i> Upcoming Lessons
+            </h2>
+            <button class="secondary" onclick="loadLessons()">
+                <i class="fas fa-sync-alt"></i> Refresh
+            </button>
+        </div>
+
+        <div id="loadingIndicator" class="loading" style="display: none;">
+            <div class="spinner"></div>
+        </div>
+
+        <div id="lessonsContainer">
+            <table>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Student</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody id="lessonTableBody">
+                <!-- Lessons will be loaded here -->
+                </tbody>
+            </table>
+            <div id="emptyState" class="empty-state">
+                <i class="fas fa-calendar-times"></i>
+                <p>No lessons scheduled yet</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Configuration
+    const API_BASE_URL = window.location.origin.includes('localhost')
+    ? 'http://localhost:8080/api/lessons'
+    : '/api/lessons'; // For production
+
+    // DOM Elements
+    const lessonTableBody = document.getElementById("lessonTableBody");
+    const errorMessage = document.getElementById("errorMessage");
+    const loadingIndicator = document.getElementById("loadingIndicator");
+    const emptyState = document.getElementById("emptyState");
+    const studentNameInput = document.getElementById("studentName");
+    const lessonDateInput = document.getElementById("lessonDate");
+    const lessonTimeInput = document.getElementById("lessonTime");
+
+    // Formatting Utilities
+    function formatDisplayDate(dateString) {
+        try {
+            if (!dateString) return '';
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return dateString; // Fallback to raw string if invalid date
+            const options = { weekday: 'short', month: 'short', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        } catch (e) {
+            console.error("Date formatting error:", e);
+            return dateString; // Return original if formatting fails
+        }
+    }
+
+    async function fetchWithErrorHandling(url, options = {}) {
+    try {
+        const response = await fetch(url, {
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('API Error:', error);
+        showToast(error.message || 'Failed to communicate with server');
+        throw error;
+    }
+}
+
+    function formatDisplayTime(timeString) {
+        try {
+            if (!timeString) return '';
+            const [hours, minutes] = timeString.split(':');
+            const hour = parseInt(hours);
+            if (isNaN(hour)) return timeString; // Fallback to raw string
+
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour % 12 || 12;
+            return `${displayHour}:${minutes} ${ampm}`;
+        } catch (e) {
+            console.error("Time formatting error:", e);
+            return timeString;
+        }
+    }
+
+    function getStatusClass(status) {
+        const normalizedStatus = (status || 'pending').toLowerCase();
+        return `status-${normalizedStatus}`;
+    }
+
+    // API Helpers with Retry Logic
+    async function fetchWithRetry(url, options = {}, retries = MAX_RETRIES) {
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                const error = await response.json().catch(() => ({}));
+                throw new Error(error.message || `HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            if (retries > 0) {
+                await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+                return fetchWithRetry(url, options, retries - 1);
+            }
+            throw error;
+        }
+    }
+
+    // Form Validation
+    function validateForm() {
+        errorMessage.textContent = '';
+        let isValid = true;
+
+        if (!studentNameInput.value.trim()) {
+            errorMessage.textContent = 'Student name is required';
+            studentNameInput.focus();
+            isValid = false;
+        } else if (!lessonDateInput.value) {
+            errorMessage.textContent = 'Date is required';
+            lessonDateInput.focus();
+            isValid = false;
+        } else if (!lessonTimeInput.value) {
+            errorMessage.textContent = 'Time is required';
+            lessonTimeInput.focus();
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    // Core Functions with Enhanced Error Handling
+    async function addLesson() {
+    const studentName = document.getElementById("studentName").value.trim();
+    const date = document.getElementById("lessonDate").value;
+    const time = document.getElementById("lessonTime").value;
+
+    if (!studentName || !date || !time) {
+        showToast('Please fill all fields', 'error');
+        return;
+    }
+
+    try {
+        await fetchWithErrorHandling(`${API_BASE_URL}/requests`, {
+            method: 'POST',
+            body: JSON.stringify({
+                studentName,
+                preferredDate: date,
+                preferredTime: time
+            })
+        });
+
+        // Clear form
+        document.getElementById("studentName").value = '';
+        document.getElementById("lessonTime").value = '';
+
+        showToast('Lesson scheduled successfully!', 'success');
+        await loadLessons();
+    } catch (error) {
+        console.error('Add Lesson Error:', error);
+    }
+}
+
+
+    async function loadLessons() {
+    const loadingIndicator = document.getElementById("loadingIndicator");
+    const lessonTableBody = document.getElementById("lessonTableBody");
+    const emptyState = document.getElementById("emptyState");
+
+    try {
+        loadingIndicator.style.display = 'flex';
+        lessonTableBody.innerHTML = '';
+        emptyState.style.display = 'none';
+
+        const lessons = await fetchWithErrorHandling(API_BASE_URL);
+
+        if (lessons.length > 0) {
+            lessons.forEach(lesson => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${lesson.lessonId}</td>
+                    <td>${lesson.studentName}</td>
+                    <td>${formatDate(lesson.date)}</td>
+                    <td>${formatTime(lesson.time)}</td>
+                    <td><span class="status ${lesson.status.toLowerCase()}">${lesson.status}</span></td>
+                    <td>
+                        <button class="cancel-btn" onclick="cancelLesson('${lesson.lessonId}')">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </td>
+                `;
+                lessonTableBody.appendChild(row);
+            });
+        } else {
+            emptyState.style.display = 'block';
+        }
+    } catch (error) {
+        emptyState.style.display = 'block';
+        emptyState.innerHTML = `
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>Failed to load lessons</p>
+            <button onclick="loadLessons()">Retry</button>
+        `;
+    } finally {
+        loadingIndicator.style.display = 'none';
+    }
+}
+    async function cancelLesson(id) {
+        if (!id || !confirm('Are you sure you want to cancel this lesson?')) return;
+
+        try {
+            await fetchWithRetry(`${API_BASE_URL}/cancel/${id}`, {
+                method: 'DELETE'
+            });
+            showToast('Lesson cancelled successfully', 'success');
+            await loadLessons();
+        } catch (error) {
+            console.error('Cancel Lesson Error:', error);
+            showToast(error.message || 'Failed to cancel lesson', 'error');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+    // Set default date to today
+    document.getElementById("lessonDate").valueAsDate = new Date();
+    loadLessons();
+});
+
+    // Toast Notification System
+    function showToast(message, type = 'info') {
+        try {
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.style.background = type === 'error' ? 'var(--danger)' :
+                                  type === 'success' ? 'var(--success)' : 'var(--primary)';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('fade-out');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        } catch (e) {
+            console.error('Toast Error:', e);
+            alert(message); // Fallback if toast system fails
+        }
+    }
+
+    // Initialize with error boundary
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            // Set default date to today
+            const today = new Date().toISOString().split('T')[0];
+            lessonDateInput.value = today;
+
+            // Load initial data
+            loadLessons();
+
+            // Add animation to cards
+            document.querySelectorAll('.card').forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+            });
+        } catch (e) {
+            console.error('Initialization Error:', e);
+            showToast('Application initialization failed', 'error');
+        }
+    });
+
+    // Global error handler
+    window.addEventListener('error', (event) => {
+        console.error('Global Error:', event.error);
+        showToast('An unexpected error occurred', 'error');
+    });
+
+    function formatDate(dateString) {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+}
+    function formatTime(timeString) {
+    const [hours, minutes] = timeString.split(':');
+    const hour = parseInt(hours);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour % 12 || 12;
+    return `${displayHour}:${minutes} ${ampm}`;
+}
+</script>
+</body>
+</html>
