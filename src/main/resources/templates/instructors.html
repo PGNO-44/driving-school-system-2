@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driving School Instructor Management</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<div class="header">
+    <h1>Driving School Instructor Hub</h1>
+</div>
+
+<div class="nav-buttons">
+    <button onclick="showSection('register')">Register Instructor</button>
+    <button onclick="showSection('list')">Instructor List</button>
+</div>
+
+<div class="container">
+    <!-- Register Section -->
+    <div id="register" class="section active">
+        <h2>Register New Instructor</h2>
+        <form th:action="@{/instructors/register}" method="post" th:object="${instructor}">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" th:field="*{name}" required
+                       pattern="[A-Za-z ]{2,50}">
+            </div>
+            <div class="form-group">
+                <label for="experience">Experience (Years):</label>
+                <input type="number" id="experience" th:field="*{experience}"
+                       required min="0" max="50">
+            </div>
+            <div class="form-group">
+                <label>Available:</label>
+                <label for="available"></label><input type="checkbox" id="available" th:field="*{available}">
+            </div>
+            <button type="submit">Register</button>
+            <a href="#" class="back-btn" onclick="showSection('list')">Back to List</a>
+        </form>
+    </div>
+
+    <!-- List Section -->
+    <div id="list" class="section">
+        <h2>Instructor List</h2>
+        <div class="sort-buttons">
+            <a th:href="@{/instructors/sort(criteria='experience', ascending=false)}"
+               class="sort-btn">Sort by Experience (High to Low)</a>
+            <a th:href="@{/instructors/sort(criteria='name', ascending=true)}"
+               class="sort-btn">Sort by Name (A-Z)</a>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Experience</th>
+                <th>Available</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="instructor : ${instructors}">
+                <td th:text="${instructor.id}"></td>
+                <td th:text="${instructor.name}"></td>
+                <td th:text="${instructor.experience}"></td>
+                <td th:text="${instructor.available} ? 'Yes' : 'No'"></td>
+                <td>
+                    <button class="action-btn"
+                            th:attr="data-id=${instructor.id}"
+                            onclick="loadEditForm(this.getAttribute('data-id'))">Edit</button>
+                    <a class="action-btn"
+                       th:href="@{/instructors/delete/{id}(id=${instructor.id})}"
+                       onclick="return confirm('Delete this instructor?')">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <a href="#" class="back-btn" onclick="showSection('register')">Add New</a>
+    </div>
+
+    <!-- Edit Section -->
+    <div id="edit" class="section">
+        <h2>Edit Instructor</h2>
+        <form th:action="@{/instructors/edit}" method="post">
+            <input type="hidden" id="edit-id" name="id">
+            <div class="form-group">
+                <label for="edit-name">Name:</label>
+                <input type="text" id="edit-name" name="name" required
+                       pattern="[A-Za-z ]{2,50}" title="2-50 characters, letters and spaces only">
+            </div>
+            <div class="form-group">
+                <label for="edit-experience">Experience (Years):</label>
+                <input type="number" id="edit-experience" name="experience"
+                       required min="0" max="50" title="0-50 years">
+            </div>
+            <div class="form-group">
+                <label>Available:</label>
+                <label for="edit-available"></label><input type="checkbox" id="edit-available" name="available">
+            </div>
+            <button type="submit">Update</button>
+            <a href="#" class="back-btn" onclick="showSection('list')">Back to List</a>
+        </form>
+    </div>
+</div>
+
+<script>
+    function showSection(sectionId) {
+        document.querySelectorAll('.section').forEach(section => {
+            section.classList.remove('active');
+        });
+        document.getElementById(sectionId).classList.add('active');
+    }
+
+    function loadEditForm(id) {
+        fetch('/instructors/edit/' + id)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('edit-id').value = data.id;
+                document.getElementById('edit-name').value = data.name;
+                document.getElementById('edit-experience').value = data.experience;
+                document.getElementById('edit-available').checked = data.available;
+                showSection('edit');
+            })
+            .catch(error => console.error('Error:', error));
+    }
+</script>
+</body>
+</html>
