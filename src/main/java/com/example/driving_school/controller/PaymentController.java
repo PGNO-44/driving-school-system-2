@@ -8,17 +8,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+//spring said this is web Controller
 @Controller
 public class PaymentController {
 
+    //paymentService class inject controller class
     @Autowired
     private PaymentService paymentService;
 
+    // Redirect first URL to createPayment page
     @GetMapping("/")
-    public String redirectToPayments() {
+    public String redirectToPayments()   {
         return "redirect:/api/payments/new";
     }
 
+    // Show all payments
     @GetMapping("/api/payments")
     public String getAllPayments(Model model) {
         model.addAttribute("payments", paymentService.getAllPayments());
