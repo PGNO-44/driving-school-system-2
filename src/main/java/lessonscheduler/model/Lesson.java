@@ -25,16 +25,18 @@ public class Lesson {
         this.status = status;
     }
 
+    // Status Management Methods
+    // confirm the lesson
     public void confirmLesson() {
         this.status = "Confirmed";
     }
 
-    // Method to cancel the lesson
+    // cancel the lesson
     public void cancelLesson() {
         this.status = "Cancelled";
     }
 
-    // Method to complete the lesson
+    // complete the lesson
     public void completeLesson() {
         this.status = "Completed";
     }
