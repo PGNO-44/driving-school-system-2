@@ -15,7 +15,6 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private PaymentRepository paymentRepository;
 
-    //Use this for queue processing — not directly exposed via interface
     public Payment savePayment(Payment payment) {
         try {
             return paymentRepository.save(payment);
@@ -28,7 +27,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public Payment createPayment(Payment payment) {
-        return savePayment(payment); // Direct save without queue
+        return savePayment(payment);
     }
 
     @Override
